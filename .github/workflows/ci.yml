@@ -16,4 +16,4 @@ jobs:
       - run: npm test
       - run: npm run test:browser
       - run: npm run test:safe-area
-      - run: xvfb-run -a npm run test:safe-area:headed
+      - run: xvfb-run -a -s '-screen 0 1920x1200x24' npm run test:safe-area:headed

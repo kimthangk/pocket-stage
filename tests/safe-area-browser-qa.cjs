@@ -102,7 +102,7 @@ async function run() {
   let plainBrowser;
   let context;
   try {
-    browser = await chromium.launch({ headless: !process.argv.includes('--headed'), args: process.argv.includes('--headed') ? ['--start-maximized'] : [] });
+    browser = await chromium.launch({ headless: !process.argv.includes('--headed'), args: process.argv.includes('--headed') ? ['--window-size=1600,1200'] : [] });
     context = await browser.newContext({ viewport: null });
     controller = createSafeAreaController(context);
     const page = await context.newPage();
