@@ -142,12 +142,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .side-control { position: absolute; z-index: 2; right: -3px; width: 3px; border-radius: 0 3px 3px 0; background: linear-gradient(90deg,#686f6c,#252a27); box-shadow: 1px 1px 2px #0008; }
 .side-control-upper { top: 136px; height: 50px; }
 .side-control-lower { top: 203px; height: 83px; }
-.safe-guides { position: absolute; inset: 0; z-index: 2; overflow: hidden; pointer-events: none; border-radius: inherit; }
-.safe-edge { position: absolute; left: 0; width: 100%; height: 59px; display: flex; justify-content: center; border-color: #72ad37b0; border-style: dashed; border-width: 0 0 1px; background: linear-gradient(180deg,#96c75013,#96c75003); }
-.safe-edge i { position: absolute; right: 9px; bottom: 3px; padding: 2px 4px; border-radius: 3px; background: #131a12a8; color: #bee78b; font: 7px ui-monospace,monospace; font-style: normal; letter-spacing: .1em; }
-.safe-edge-top { top: 0; }
-.safe-edge-bottom { bottom: 0; height: 34px; border-width: 1px 0 0; background: linear-gradient(0deg,#96c75013,#96c75003); }
-.safe-edge-bottom i { top: 3px; bottom: auto; }
 .device-frame:not(.with-chrome) { padding-top: 14px; padding-bottom: 14px; border-radius: 58px; }
 .device-frame:not(.with-chrome)::before { border-radius: 53px; }
 .device-frame:not(.with-chrome) .device-lip { border-radius: 43px; }
@@ -216,14 +210,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .safe-area-status.warning{color:#f0bd88}
 .safe-area-overlay{position:absolute;inset:0;z-index:4;overflow:hidden;pointer-events:none;border-radius:inherit}
 .safe-area-overlay[hidden]{display:none}
-.inset-edge{position:absolute;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#b3db6a27;box-shadow:inset 0 0 0 1px #bddf8270;color:#f1f8dd}
-.inset-edge i{padding:2px 4px;border-radius:3px;background:#111812ad;font:700 7px ui-monospace,Consolas,monospace;font-style:normal;letter-spacing:.08em}
-.inset-top{top:0;left:0;width:100%;height:var(--inset-top)}
-.inset-right{top:0;right:0;width:var(--inset-right);height:100%}
-.inset-bottom{bottom:0;left:0;width:100%;height:var(--inset-bottom)}
-.inset-left{top:0;left:0;width:var(--inset-left);height:100%}
-.inset-overlay-label{position:absolute;top:5px;left:40px;max-width:calc(100% - 50px);padding:3px 5px;border:1px solid #b6d58166;border-radius:4px;background:#121912df;color:#e7f2d4;font:700 6px ui-monospace,Consolas,monospace;letter-spacing:.07em}
-.safe-area-overlay.guide-only .inset-overlay-label{border-color:#dbab6a88;color:#ffe1b8}
 
 /* Keep the everyday preview controls visible; disclose detailed tuning on demand. */
 .simple-heading { margin: 0 0 14px; font-size: 14px; font-weight: 650; }
@@ -254,3 +240,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .iphone-17 .island { pointer-events: none; }
 .iphone-17 .island::after { content: ''; position: absolute; right: 12px; top: 14px; width: 9px; height: 9px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #314b59, #080c13 65%); box-shadow: inset 0 0 0 1px #24303c; }
 .iphone-17.landscape .island::after { right: auto; top: auto; left: 14px; bottom: 12px; }
+
+/* Preview system chrome; safe areas remain transparent. */
+.mock-status-bar { position:absolute; top:0; left:0; right:0; height:var(--inset-top,59px); display:flex; align-items:center; justify-content:space-between; padding:2px 28px 0; color:#171c19; pointer-events:none; }
+.mock-status-bar[hidden] { display:none; }
+.mock-time { width:54px; text-align:center; font:600 15px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; letter-spacing:-.4px; }
+.mock-status-icons { display:flex; align-items:center; gap:5px; }
+.mock-status-icons svg { display:block; }
+.marvel-device.landscape .mock-status-bar { display:none; }
+#device-frame .home-indicator { position:absolute; z-index:5; left:50%; bottom:8px; width:134px; height:5px; border-radius:3px; background:#171c19; transform:translateX(-50%); pointer-events:none; }

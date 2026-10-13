@@ -103,16 +103,16 @@ test('preset rotation updates the actual iframe CSS viewport dimensions', () => 
   select.dispatch('change');
   assert.equal(app.get('preview-frame').style.width, '402px');
   assert.equal(app.get('preview-frame').style.height, '874px');
-  assert.equal(app.get('inset-top').value, '45');
+  assert.equal(app.get('inset-top').value, '59');
   assert.equal(app.get('inset-bottom').value, '34');
   app.get('landscape-button').dispatch('click');
   assert.equal(app.get('preview-frame').style.width, '874px');
   assert.equal(app.get('preview-frame').style.height, '402px');
-  assert.equal(app.get('inset-left').value, '45');
+  assert.equal(app.get('inset-left').value, '59');
   assert.equal(app.get('inset-right').value, '34');
   assert.match(app.get('viewport-readout').textContent, /^874 . 402 CSS px/);
   app.get('portrait-button').dispatch('click');
-  assert.equal(app.get('inset-top').value, '45');
+  assert.equal(app.get('inset-top').value, '59');
 });
 
 test('iPhone safe-area defaults align below the frame island and migrate only legacy defaults', () => {
@@ -121,9 +121,9 @@ test('iPhone safe-area defaults align below the frame island and migrate only le
     chrome: true, safeArea: true, insets: { top: 62, right: 0, bottom: 34, left: 0 },
   };
   const app = createPreview([['pocket-stage.preferences.v1', JSON.stringify(stored)]]);
-  assert.equal(app.get('inset-top').value, '45');
+  assert.equal(app.get('inset-top').value, '59');
   assert.equal(app.get('inset-bottom').value, '34');
-  assert.deepEqual(JSON.parse(app.storage.get('pocket-stage.preferences.v1')).insets, { top: 45, right: 0, bottom: 34, left: 0 });
+  assert.deepEqual(JSON.parse(app.storage.get('pocket-stage.preferences.v1')).insets, { top: 59, right: 0, bottom: 34, left: 0 });
 
   const custom = { ...stored, insets: { top: 51, right: 0, bottom: 29, left: 0 } };
   const customApp = createPreview([['pocket-stage.preferences.v1', JSON.stringify(custom)]]);
@@ -132,9 +132,9 @@ test('iPhone safe-area defaults align below the frame island and migrate only le
 
   const landscape = { ...stored, orientation: 'landscape', insets: { top: 0, right: 34, bottom: 0, left: 62 } };
   const landscapeApp = createPreview([['pocket-stage.preferences.v1', JSON.stringify(landscape)]]);
-  assert.equal(landscapeApp.get('inset-left').value, '45');
+  assert.equal(landscapeApp.get('inset-left').value, '59');
   assert.equal(landscapeApp.get('inset-right').value, '34');
-  assert.deepEqual(JSON.parse(landscapeApp.storage.get('pocket-stage.preferences.v1')).insets, { top: 0, right: 34, bottom: 0, left: 45 });
+  assert.deepEqual(JSON.parse(landscapeApp.storage.get('pocket-stage.preferences.v1')).insets, { top: 0, right: 34, bottom: 0, left: 59 });
 });
 
 test('custom dimension inputs describe the active landscape viewport without swapping on apply', () => {

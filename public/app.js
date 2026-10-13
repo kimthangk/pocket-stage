@@ -36,7 +36,7 @@
   let chromeOn = true;
   let safeAreaOn = true;
   let safeAreaApplied = false;
-  let insets = { top: 45, right: 0, bottom: 34, left: 0 };
+  let insets = { top: 59, right: 0, bottom: 34, left: 0 };
   let safeAreaRequestId = 0;
   let safeAreaQueue = Promise.resolve();
   let currentPreset = 'iphone-17';
@@ -80,13 +80,13 @@
       let migrated = false;
       // Migrate only the previous bundled iPhone defaults. Preserve custom values.
       if (preset === 'iphone-17') {
-        const oldPortrait = insets.top === 62 && insets.right === 0 && insets.bottom === 34 && insets.left === 0;
-        const oldLandscape = insets.top === 0 && insets.right === 34 && insets.bottom === 0 && insets.left === 62;
+        const oldPortrait = (insets.top === 62 || insets.top === 45) && insets.right === 0 && insets.bottom === 34 && insets.left === 0;
+        const oldLandscape = insets.top === 0 && insets.right === 34 && insets.bottom === 0 && (insets.left === 62 || insets.left === 45);
         if (orientation === 'landscape' && oldLandscape) {
-          Object.assign(insets, { top: 0, right: 34, bottom: 0, left: 45 });
+          Object.assign(insets, { top: 0, right: 34, bottom: 0, left: 59 });
           migrated = true;
         } else if (orientation === 'portrait' && oldPortrait) {
-          Object.assign(insets, { top: 45, right: 0, bottom: 34, left: 0 });
+          Object.assign(insets, { top: 59, right: 0, bottom: 34, left: 0 });
           migrated = true;
         }
       }
@@ -150,13 +150,10 @@
     $('fit-button').setAttribute('aria-pressed', String(scaleMode === 'fit'));
     $('actual-button').setAttribute('aria-pressed', String(scaleMode === 'actual'));
     $('chrome-toggle').checked = chromeOn;
-    $('safe-guides').hidden = !chromeOn;
+    $('status-bar').hidden = !chromeOn || insets.top < 24;
     $('safe-area-toggle').checked = safeAreaOn;
     $('safe-area-overlay').hidden = !safeAreaOn;
     $('safe-area-overlay').classList.toggle('applied', safeAreaApplied);
-    $('safe-area-label').textContent = safeAreaApplied
-      ? 'SIMULATED CSS ENV • ESTIMATES'
-      : 'GUIDE ONLY • CSS env() unchanged';
     for (const edge of ['top', 'right', 'bottom', 'left']) {
       $('inset-' + edge).value = String(insets[edge]);
       $('safe-area-overlay').style.setProperty('--inset-' + edge, insets[edge] + 'px');
@@ -322,8 +319,8 @@
   function setPresetInsets(preset = currentPreset) {
     if (preset === 'iphone-17') {
       insets = orientation === 'portrait'
-        ? { top: 45, right: 0, bottom: 34, left: 0 }
-        : { top: 0, right: 34, bottom: 0, left: 45 };
+        ? { top: 59, right: 0, bottom: 34, left: 0 }
+        : { top: 0, right: 34, bottom: 0, left: 59 };
     } else if (preset !== 'custom') {
       insets = { top: 0, right: 0, bottom: 0, left: 0 };
     }
@@ -373,9 +370,6 @@
       }
       $('safe-area-overlay').classList.toggle('applied', safeAreaApplied);
       $('safe-area-overlay').classList.toggle('guide-only', !safeAreaApplied);
-      $('safe-area-label').textContent = safeAreaApplied
-        ? 'SIMULATED CSS ENV • ESTIMATES'
-        : 'GUIDE ONLY • CSS env() unchanged';
       savePreferences();
     });
     return safeAreaQueue;

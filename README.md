@@ -14,7 +14,7 @@ npm run browser:install
 npm start
 ```
 
-This opens a separate managed Chromium window on http://127.0.0.1:4173/. Enter your app's local URL. New sessions start with iPhone 17, safe areas and the Dynamic Island/camera overlay enabled. The inset defaults are 45px top and 34px bottom; these are frame estimates, not measured iPhone values.
+This opens a separate managed Chromium window on http://127.0.0.1:4173/. Enter your app's local URL. New sessions start with iPhone 17, safe areas and the Dynamic Island/camera overlay enabled. The inset defaults are 59px top and 34px bottom; these are frame estimates, not measured iPhone values.
 
 On Windows you can double-click `launch.cmd` after setup. `launch-safe-area.cmd` is an equivalent entry point. Close the managed window or press Ctrl+C to stop.
 

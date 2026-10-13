@@ -122,6 +122,8 @@ async function run() {
     assert.equal(await page.locator('#custom-width').isVisible(), false);
     assert.equal(await page.locator('#safe-area-toggle').isVisible(), true);
     assert.equal(await page.locator('#preview-frame').getAttribute('src'), 'about:blank');
+    assert.equal(await page.locator('.mock-time').innerText(), '9:41');
+    assert.equal(await page.locator('.inset-edge,.inset-overlay-label,#safe-guides').count(), 0);
     await screenshot(page, '01-ready-1365x900.png');
 
     await page.getByRole('button', { name: /open the interactive fixture/i }).click();
@@ -173,7 +175,7 @@ async function run() {
     await screenshot(page, '08-iphone17-landscape-actual-1365x900.png');
     await page.locator('#chrome-toggle').check();
     const beforeOverlay = await page.locator('#preview-frame').evaluate(frame => [frame.contentWindow.innerWidth, frame.contentWindow.innerHeight]);
-    await page.locator('#safe-guides').waitFor({ state: 'visible' });
+    await page.locator('.home-indicator').waitFor({ state: 'visible' });
     assert.deepEqual(await page.locator('#preview-frame').evaluate(frame => [frame.contentWindow.innerWidth, frame.contentWindow.innerHeight]), beforeOverlay, 'visual overlays do not resize the iframe');
     await screenshot(page, '08b-iphone17-landscape-overlays-1365x900.png');
     await page.locator('#fit-button').click();

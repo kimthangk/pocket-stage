@@ -120,11 +120,13 @@ async function run() {
 
     await page.locator('#safe-area-toggle').check();
     await page.getByRole('status').filter({ hasText: 'Applied to managed Chromium' }).waitFor();
-    const portraitInsets = { top: 45, right: 0, bottom: 34, left: 0 };
+    const portraitInsets = { top: 59, right: 0, bottom: 34, left: 0 };
     await waitForInsets(page, fixturePort, portraitInsets);
+    const cutoutBottom = await page.locator('#device-frame .island').evaluate(island => island.offsetTop + island.offsetHeight - document.querySelector('#device-frame .screen').offsetTop);
+    assert.ok(portraitInsets.top >= cutoutBottom + 8, 'top inset clears the rendered island with at least 8px of space');
     assert.equal(await preview.locator('#width').innerText(), '402 px');
     assert.equal(await preview.locator('#height').innerText(), '874 px');
-    assert.equal(await preview.locator('#app-header').evaluate(element => getComputedStyle(element).paddingTop), '45px');
+    assert.equal(await preview.locator('#app-header').evaluate(element => getComputedStyle(element).paddingTop), '59px');
     const navBottom = await preview.locator('#nav-inner').evaluate(element => element.getBoundingClientRect().bottom);
     assert.ok(navBottom <= 874 - 34, `fixed nav content bottom ${navBottom} clears the 34px inset`);
     assert.equal(await page.locator('#safe-area-overlay').getAttribute('class').then(value => value.includes('applied')), true);
@@ -147,14 +149,14 @@ async function run() {
 
     await page.locator('#landscape-button').click();
     await page.getByRole('status').filter({ hasText: 'Applied to managed Chromium' }).waitFor();
-    const landscapeInsets = { top: 0, right: 34, bottom: 0, left: 45 };
+    const landscapeInsets = { top: 0, right: 34, bottom: 0, left: 59 };
     await targetFrame(page, fixturePort).waitForFunction(() => innerWidth === 874);
     await waitForInsets(page, fixturePort, landscapeInsets);
     assert.equal(await preview.locator('#width').innerText(), '874 px');
     assert.equal(await preview.locator('#height').innerText(), '402 px');
     const landscapeNavBottom = await preview.locator('#nav-inner').evaluate(element => element.getBoundingClientRect().bottom);
     const navPadding = await preview.locator('#bottom-nav').evaluate(element => [getComputedStyle(element).paddingLeft, getComputedStyle(element).paddingRight]);
-    assert.deepEqual(navPadding, ['45px', '34px']);
+    assert.deepEqual(navPadding, ['59px', '34px']);
     assert.ok(landscapeNavBottom <= 402, `fixed navigation bottom ${landscapeNavBottom} remains inside the landscape viewport`);
     await screenshot(page, '16-safe-area-iphone17-landscape-cross-origin.png');
 
@@ -246,7 +248,8 @@ async function run() {
       await plainPage.locator('#safe-area-toggle').check();
       await plainPage.getByRole('status').filter({ hasText: 'Open launch-safe-area.cmd' }).waitFor();
       assert.match(await plainPage.locator('#safe-area-status').innerText(), /was not started by the managed Chromium launcher/i);
-      assert.match(await plainPage.locator('#safe-area-label').innerText(), /GUIDE ONLY.*unchanged/i);
+      assert.ok((await plainPage.locator('#safe-area-overlay').getAttribute('class')).includes('guide-only'));
+      assert.equal(await plainPage.locator('.inset-edge,.inset-overlay-label').count(), 0);
       await screenshot(plainPage, '20-safe-area-standard-browser-guide-only-1280x720.png');
     } finally {
       await plainContext.close();
