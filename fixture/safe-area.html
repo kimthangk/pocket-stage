@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#edf3ea">
+  <title>Pocket Stage safe-area fixture</title>
+  <style>
+    :root{font-family:Inter,ui-sans-serif,system-ui,"Segoe UI",sans-serif;color:#18251d;background:#edf3ea;--safe-top:env(safe-area-inset-top,0px);--safe-right:env(safe-area-inset-right,0px);--safe-bottom:env(safe-area-inset-bottom,0px);--safe-left:env(safe-area-inset-left,0px)}
+    *{box-sizing:border-box}html,body{margin:0;min-width:0}body{padding-bottom:env(safe-area-inset-bottom,0px)}
+    button{min-height:38px;padding:0 12px;border:1px solid #455e3b;border-radius:8px;background:#263a21;color:white;font:650 12px Inter,ui-sans-serif,system-ui,"Segoe UI",sans-serif;cursor:pointer}
+    .topbar{position:sticky;top:0;z-index:2;padding:var(--safe-top) 18px 13px;background:#d9edc9ee;border-bottom:1px solid #cad9c0;backdrop-filter:blur(8px)}
+    .eyebrow{color:#5b7946;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.topbar h1{margin:8px 0 3px;font-size:21px;letter-spacing:-.035em}.topbar p{margin:0;color:#61705d;font-size:11px}
+    main{padding:16px 16px 104px}.card{margin-bottom:12px;padding:13px;border:1px solid #d3ddcf;border-radius:10px;background:#fff;box-shadow:0 4px 16px #2637210a}.card h2{margin:0 0 8px;font-size:14px}.card p{margin:0;color:#566453;font-size:11px;line-height:1.45}
+    .insets{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.insets div{padding:8px;border-radius:7px;background:#f1f5ee}.insets span{display:block;color:#778371;font-size:9px}.insets output{display:block;margin-top:3px;color:#253923;font:700 12px ui-monospace,Consolas,monospace}
+    .actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.actions .secondary{background:#f9fbf7;color:#253923}
+    .bottom-nav{position:fixed;right:0;bottom:0;left:0;z-index:3;padding:8px max(12px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));border-top:1px solid #d0dacb;background:#fffffff0;backdrop-filter:blur(10px)}
+    .nav-inner{display:flex;justify-content:space-around;gap:7px}.nav-inner button{min-height:40px;flex:1;background:#f1f5ee;color:#294023}
+    .sheet-backdrop{position:fixed;inset:0;z-index:5;display:grid;align-items:end;background:#0e1b10a6}.sheet-backdrop[hidden]{display:none}
+    .sheet{width:100%;max-height:85%;overflow:auto;padding:19px 18px calc(16px + env(safe-area-inset-bottom,0px));border-radius:18px 18px 0 0;background:#fbfcf8;box-shadow:0 -12px 40px #0003}
+    .sheet-handle{width:34px;height:4px;margin:-7px auto 14px;border-radius:9px;background:#c9d1c3}.sheet h2{margin:0 0 8px;font-size:18px}.sheet p{color:#596557;font-size:12px;line-height:1.5}.sheet-actions{display:flex;gap:8px;margin-top:14px}.sheet-actions button{flex:1}
+    .result{min-height:17px;margin-top:7px;color:#557448;font-size:10px}
+  </style>
+</head>
+<body>
+  <header class="topbar" id="app-header"><div class="eyebrow">Local safe-area fixture</div><h1>Insets reach the app</h1><p>These readouts come from CSS env() in this iframe.</p></header>
+  <main>
+    <section class="card"><h2>CSS environment values</h2><p>Changing orientation or inset inputs should update these values without changing the chosen CSS viewport.</p>
+      <div class="insets" aria-live="polite"><div><span>Top</span><output id="env-top">0px</output></div><div><span>Right</span><output id="env-right">0px</output></div><div><span>Bottom</span><output id="env-bottom">0px</output></div><div><span>Left</span><output id="env-left">0px</output></div><div><span>Iframe width</span><output id="width">-</output></div><div><span>Iframe height</span><output id="height">-</output></div></div>
+    </section>
+    <section class="card"><h2>Fixed navigation</h2><p>The bottom bar reserves the CSS bottom inset inside its fixed rectangle. The clickable actions remain above the home-indicator region.</p><div class="actions"><button id="scroll-button" class="secondary" type="button">Scroll the page</button></div><p class="result" id="fixture-result" aria-live="polite">Ready for click and scroll checks.</p></section>
+    <section class="card"><h2>Bottom sheet</h2><p>Open the sheet and check that its action stays above the bottom inset. The sheet reads the same CSS environment values.</p><div class="actions"><button id="open-sheet" type="button">Open bottom sheet</button></div></section>
+    <section class="card"><h2>Responsive content</h2><p id="resize-readout">Resize events: 0</p><div class="actions"><button id="tap-button" type="button">Tap count: <span id="tap-count">0</span></button><button id="nav-action" class="secondary" type="button">Action result</button></div></section>
+    <section class="card"><h2>Long content</h2><p>Scroll this page, rotate the frame, and return to the fixed navigation. The frame chrome and safe-area bands sit outside this iframe and do not alter its viewport size.</p></section>
+    <section class="card"><h2>More content</h2><p>Safe-area insets protect app layout under notches and home indicators on supported web runtimes. This desktop Chromium simulation cannot reproduce Safari or native behavior.</p></section>
+    <section class="card"><h2>End of fixture</h2><p>The page is intentionally scrollable to make fixed positioning easy to inspect.</p></section>
+  </main>
+  <nav class="bottom-nav" id="bottom-nav" aria-label="Fixture navigation"><div class="nav-inner" id="nav-inner"><button id="nav-home" type="button">Home</button><button id="nav-action-inner" type="button">Navigate</button></div></nav>
+  <div class="sheet-backdrop" id="sheet-backdrop" hidden><section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title"><div class="sheet-handle"></div><h2 id="sheet-title">A safe bottom sheet</h2><p>The final padding is <output id="sheet-padding">0px</output>. Both the sheet and fixed navigation respond to the simulated CSS env() values.</p><div class="sheet-actions"><button id="sheet-cta" type="button">Confirm action</button><button id="close-sheet" class="secondary" type="button">Close</button></div><p class="result" id="sheet-result" aria-live="polite">Sheet is open.</p></section></div>
+  <script>
+    const $=id=>document.getElementById(id);let resizeCount=0;let tapCount=0;
+    function report(){for(const edge of ['top','right','bottom','left'])$('env-'+edge).textContent=getComputedStyle(document.documentElement).getPropertyValue('--safe-'+edge).trim()||'0px';$('width').textContent=innerWidth+' px';$('height').textContent=innerHeight+' px';$('sheet-padding').textContent=getComputedStyle($('sheet')).paddingBottom;}
+    report();addEventListener('resize',()=>{resizeCount++;$('resize-readout').textContent='Resize events: '+resizeCount;report()});
+    const insetLayoutObserver=new ResizeObserver(report);insetLayoutObserver.observe($('app-header'));insetLayoutObserver.observe($('bottom-nav'));
+    setInterval(report,250);
+    $('scroll-button').addEventListener('click',()=>{scrollBy({top:260,behavior:'smooth'});$('fixture-result').textContent='Scroll action received.'});
+    $('tap-button').addEventListener('click',()=>{$('tap-count').textContent=String(++tapCount);$('fixture-result').textContent='Tap action received.'});
+    for(const id of ['nav-action','nav-action-inner'])$(id).addEventListener('click',()=>{$('fixture-result').textContent='Fixed navigation action received.'});
+    $('open-sheet').addEventListener('click',()=>{$('sheet-backdrop').hidden=false;$('sheet-result').textContent='Sheet is open.';report()});
+    $('close-sheet').addEventListener('click',()=>{$('sheet-backdrop').hidden=true});
+    $('sheet-cta').addEventListener('click',()=>{$('sheet-result').textContent='Sheet action received.'});
+  </script>
+</body>
+</html>

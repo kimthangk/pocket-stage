@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#101413">
+  <title>Pocket Stage — Local device preview</title>
+  <link rel="stylesheet" href="/vendor/marvel-devices.css">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Pocket Stage home">
+      <span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="brand-copy"><strong>Pocket Stage</strong><small>Local web preview</small></span>
+    </a>
+    <div class="top-meta"><span class="local-dot"></span><span>LOCAL ONLY</span><span class="top-meta-divider"></span><span>Runs on this computer</span></div>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar" aria-label="Preview controls">
+<section class="control-section address-section"><h2 class="simple-heading">Your app</h2>
+<form id="url-form" novalidate>
+          <label class="field-label" for="target-url">Local app URL</label>
+          <div class="url-field"><span class="url-glyph" aria-hidden="true">↗</span><input id="target-url" type="text" inputmode="url" autocomplete="off" spellcheck="false" placeholder="http://localhost:3000" aria-describedby="url-hint url-error"><button id="load-button" type="submit">Load</button></div>
+          <p id="url-hint" class="field-hint">Localhost only. Your URL is never saved.</p>
+          <p id="url-error" class="error-message" role="alert" hidden></p>
+        </form>
+<div class="url-actions"><button id="reload-button" class="secondary-button" type="button" disabled><span aria-hidden="true">&#8635;</span> Reload</button><a id="direct-link" class="secondary-button disabled-link" href="#" target="_blank" rel="noopener noreferrer" aria-disabled="true"><span aria-hidden="true">&#8599;</span> Open directly</a></div>
+        <p class="field-hint">Blank preview? Try Open directly.</p></section>
+<section class="control-section device-section"><h2 class="simple-heading">Device</h2><label class="field-label" for="device-select">Preset</label>
+        <div class="select-wrap"><select id="device-select" aria-describedby="device-note">
+          <optgroup label="iPhone Duo - estimated viewport">
+            <option value="iphone-duo-cover">iPhone Duo - folded cover</option>
+            <option value="iphone-duo">iPhone Duo - unfolded inner</option>
+          </optgroup>
+          <optgroup label="Other frames - library defaults">
+            <option value="iphone-17">iPhone 17</option>
+            <option value="note8">Galaxy Note8</option>
+            <option value="nexus5">Nexus 5</option>
+          </optgroup>
+          <option value="custom">Custom viewport</option>
+        </select><span class="select-chevron" aria-hidden="true">⌄</span></div>
+        <div class="orientation-row"><span class="field-label">Orientation</span><div class="segmented" role="group" aria-label="Orientation"><button id="portrait-button" type="button" aria-pressed="true"><span aria-hidden="true">&#9646;</span> Portrait</button><button id="landscape-button" type="button" aria-pressed="false"><span aria-hidden="true">&#9645;</span> Landscape</button></div></div>
+      </section>
+<section class="control-section safe-section"><div id="safe-area-option" class="safe-area-option">
+<label class="switch-row" for="safe-area-toggle"><span class="chrome-symbol safe-symbol" aria-hidden="true">&#9633;</span><span><strong>Safe area</strong><small>Use the selected device's inset estimates.</small></span><input id="safe-area-toggle" type="checkbox"><span class="switch-track" aria-hidden="true"></span></label>
+<p id="safe-area-status" class="safe-area-status" role="status" aria-live="polite">Off.</p></div></section>
+<details id="advanced-settings" class="advanced-settings"><summary>Advanced settings</summary><div class="advanced-content">
+<h3>Custom dimensions</h3><p id="device-note" class="field-hint device-note">Use measured CSS viewport values for accurate layout.</p><div class="dimension-row">
+          <label><span>Width</span><div class="dimension-input"><input id="custom-width" type="number" inputmode="numeric" min="240" max="2400" value="466" aria-label="Custom viewport width in CSS pixels"><span>px</span></div></label>
+          <span class="times" aria-hidden="true">×</span>
+          <label><span>Height</span><div class="dimension-input"><input id="custom-height" type="number" inputmode="numeric" min="240" max="2400" value="678" aria-label="Custom viewport height in CSS pixels"><span>px</span></div></label>
+          <button id="apply-dimensions" class="apply-button" type="button" aria-label="Apply custom dimensions">Apply</button>
+        </div>
+        <div id="dimension-error" class="error-message inline-error" role="alert" hidden>Enter whole CSS-pixel values from 240 to 2400.</div>
+
+<h3>Preview scale</h3><div class="scale-options" role="group" aria-label="Preview scale">
+          <button id="fit-button" type="button" aria-pressed="true"><span class="scale-icon fit-icon" aria-hidden="true">↔</span><span><strong>Fit to window</strong><small>Scale to available space</small></span><span class="check-dot" aria-hidden="true"></span></button>
+          <button id="actual-button" type="button" aria-pressed="false"><span class="scale-icon actual-icon" aria-hidden="true">1:1</span><span><strong>Actual size</strong><small>100% CSS-pixel scale</small></span><span class="check-dot" aria-hidden="true"></span></button>
+        </div>
+
+<div class="chrome-option"><label class="switch-row" for="chrome-toggle"><span class="chrome-symbol" aria-hidden="true">&#9678;</span><span><strong>Frame overlays &amp; guides</strong><small>Island, fold seam, and guide lines overlap app pixels.</small></span><input id="chrome-toggle" type="checkbox"><span class="switch-track" aria-hidden="true"></span></label><p>Visual only: guides may cover content, do not resize the viewport, and do not set iOS <code>env()</code> insets.</p></div>
+
+<h3>Custom safe-area insets</h3><p class="field-hint">Estimates in CSS pixels. Apply real insets with launch-safe-area.cmd; ordinary browsers show guides only.</p><div class="inset-grid" aria-label="Safe-area inset values">
+            <label><span>Top</span><input id="inset-top" type="number" min="0" max="200" value="0" aria-label="Top safe-area inset in CSS pixels"></label>
+            <label><span>Right</span><input id="inset-right" type="number" min="0" max="200" value="0" aria-label="Right safe-area inset in CSS pixels"></label>
+            <label><span>Bottom</span><input id="inset-bottom" type="number" min="0" max="200" value="0" aria-label="Bottom safe-area inset in CSS pixels"></label>
+            <label><span>Left</span><input id="inset-left" type="number" min="0" max="200" value="0" aria-label="Left safe-area inset in CSS pixels"></label>
+            <button id="apply-insets" class="apply-button" type="button">Apply</button>
+          </div>
+          <p id="inset-error" class="error-message inline-error" role="alert" hidden>Enter whole CSS-pixel values from 0 to 200.</p>
+
+</div></details>
+<footer class="sidebar-footer"><span>Display preferences stay on this computer.</span></footer></aside>
+
+    <section class="stage-column" aria-label="Device preview stage">
+      <div class="stage-toolbar"><div class="stage-label"><span class="stage-signal"></span><strong>PREVIEW STAGE</strong><span class="stage-separator">/</span><span id="stage-preset-label">iPhone Duo - folded cover</span></div><div class="stage-readout"><span id="viewport-readout">466 x 678 CSS px - estimate</span><span class="readout-divider"></span><span id="scale-readout">Fit</span></div></div>
+      <div id="stage" class="stage" tabindex="0" aria-label="Scrollable preview stage">
+        <div id="fit-spacer" class="fit-spacer"><div id="scale-root" class="scale-root"><div id="device-frame" class="marvel-device iphone-duo-cover night-sky">
+          <div class="inner"></div><div class="overflow"><div class="shadow"></div></div>
+          <div class="top-bar"></div><div class="sleep"></div><div class="bottom-bar"></div><div class="volume"></div>
+          <div class="camera"></div><div class="sensor"></div><div class="speaker"></div><div class="sensors"></div><div class="more-sensors"></div>
+          <div class="inner-shadow"></div><div class="hinge"></div><div class="camera-control"></div>
+          <div class="screen"><iframe id="preview-frame" title="Local web app preview" src="about:blank" referrerpolicy="no-referrer" loading="eager"></iframe><div id="safe-area-overlay" class="safe-area-overlay guide-only" aria-hidden="true" hidden><span class="inset-edge inset-top"><i>TOP</i></span><span class="inset-edge inset-right"><i>RIGHT</i></span><span class="inset-edge inset-bottom"><i>BOTTOM</i></span><span class="inset-edge inset-left"><i>LEFT</i></span><strong id="safe-area-label" class="inset-overlay-label">GUIDE ONLY • CSS env() unchanged</strong></div><div id="safe-guides" class="safe-guides" aria-hidden="true"><span class="safe-edge safe-edge-top"><i>GUIDE</i></span><span class="safe-edge safe-edge-bottom"><i>GUIDE</i></span></div><div class="home-indicator" aria-hidden="true"></div></div>
+          <div class="island"></div><div class="crease"></div><div class="udc"></div>
+        </div></div></div>
+
+        <div id="empty-state" class="empty-state"><div class="empty-icon" aria-hidden="true"><span></span></div><h2>Ready for your local app</h2><p>Enter a loopback URL to start previewing. Try the included fixture:</p><button id="fixture-button" type="button" class="fixture-button"><span aria-hidden="true">✳</span> Open the interactive fixture</button><small>No device simulator or browser proxy is running.</small></div>
+        <div class="stage-corner stage-corner-left" aria-hidden="true"></div><div class="stage-corner stage-corner-right" aria-hidden="true"></div>
+      </div>
+      <div class="stage-caption"><span class="caption-pip"></span><span>A responsive web frame, not an iOS simulator</span><span class="caption-dot">&middot;</span><span>Safari and native behavior can differ</span></div>
+    </section>
+  </main>
+</body>
+</html>

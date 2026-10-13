@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#eef2eb">
+  <title>Pocket Stage · viewport fixture</title>
+  <style>
+    *{box-sizing:border-box}html{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:#15231b;background:#eef2eb}body{margin:0;min-width:0}.hero{padding:22px 20px 20px;background:linear-gradient(145deg,#e8f7d8,#f7f8ee);border-bottom:1px solid #d8e1d1}.eyebrow{display:flex;align-items:center;gap:7px;color:#577b3c;font-size:10px;font-weight:750;letter-spacing:.1em;text-transform:uppercase}.eyebrow span{display:inline-block;width:7px;height:7px;border-radius:50%;background:#8bbe52}.hero h1{max-width:330px;margin:12px 0 8px;font-size:26px;line-height:1.07;letter-spacing:-.045em}.hero p{max-width:350px;margin:0;color:#526157;font-size:12px;line-height:1.55}.metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:18px}.metric{padding:10px;border:1px solid #d8e2d2;border-radius:9px;background:#ffffffaa}.metric span{display:block;color:#718071;font-size:9px}.metric strong{display:block;margin-top:4px;font:650 13px ui-monospace,SFMono-Regular,Consolas,monospace}.actions{display:grid;gap:8px;margin:16px 0 0}.actions button{min-height:36px;border:1px solid #526848;border-radius:8px;background:#23341e;color:#f5fbef;font-size:11px;font-weight:650;cursor:pointer}.actions button.secondary{background:#f8faf6;color:#23341e}.result{margin:10px 0 0;color:#537142;font-size:10px}.section{padding:18px 20px;border-bottom:1px solid #d8ded5}.section h2{margin:0 0 7px;font-size:15px;letter-spacing:-.02em}.section p{margin:0;color:#5f6c61;font-size:11px;line-height:1.55}.status{padding:13px;border:1px solid #d8e3d1;border-radius:8px;background:white;font-size:11px}.status strong{color:#47792c}.long{padding:18px 20px 30px}.long h2{margin:0 0 10px;font-size:15px}.card{margin:0 0 10px;padding:14px;border:1px solid #d9e1d6;border-radius:10px;background:#fff}.card span{color:#6e806f;font-size:9px;font-weight:700;letter-spacing:.08em}.card h3{margin:5px 0 6px;font-size:13px}.card p{margin:0;color:#617064;font-size:11px;line-height:1.5}.bottom{padding:20px;color:#607064;text-align:center;font-size:9px}
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="eyebrow"><span></span>Local interaction fixture</div>
+    <h1>One page.<br>Any viewport.</h1>
+    <p>This fixture reports the iframe's real CSS viewport, exercises clicks, and gives you enough page length to try scrolling and rotation.</p>
+    <div class="metrics" aria-live="polite">
+      <div class="metric"><span>Viewport width</span><strong id="width">—</strong></div>
+      <div class="metric"><span>Viewport height</span><strong id="height">—</strong></div>
+      <div class="metric"><span>Document scroll Y</span><strong id="scroll-y">0</strong></div>
+      <div class="metric"><span>Resize events</span><strong id="resize-count">0</strong></div>
+    </div>
+    <div class="actions"><button id="count-button" type="button">Tap test · <span id="tap-count">0</span></button><button id="scroll-button" class="secondary" type="button">Scroll down 240 CSS px</button></div>
+    <p id="click-result" class="result" aria-live="polite">Click target is ready.</p>
+  </header>
+  <section class="section"><div class="status"><strong>Safe area fixture</strong><br>Use a page-level guide from Pocket Stage; this page's own viewport does not receive iOS Safari inset values.</div></section>
+  <section class="section"><h2>Responsive layout</h2><p>The card width follows the current iframe viewport. Rotate the device and the dimension readout should change while this page stays loaded.</p></section>
+  <section class="long"><h2>Scroll check</h2>
+    <article class="card"><span>01 · SCROLL</span><h3>Keep going</h3><p>When you scroll this content, the document's scroll Y value updates in the live metrics above.</p></article>
+    <article class="card"><span>02 · CLICK</span><h3>Tap test button</h3><p>Each click increments a counter. Reload should reset it and confirm the reload control is wired.</p></article>
+    <article class="card"><span>03 · VIEWPORT</span><h3>Portrait and landscape</h3><p>Changing orientation resizes the frame's actual iframe viewport. No browser emulation or user agent override is applied.</p></article>
+    <article class="card"><span>04 · FRAME LIMITS</span><h3>Try a blocked fixture</h3><p>Append <code>/fixture/blocked</code> to the tool origin. The browser should reject this page in the frame, but it can still open directly.</p></article>
+    <article class="card"><span>05 · LONG PAGE</span><h3>More page to scroll</h3><p>Scroll several screens. The page is intentionally taller than a phone viewport so you can check the stage and page scroll.</p></article>
+    <article class="card"><span>06 · END</span><h3>You reached the bottom</h3><p>This is the final fixture card and the bottom of the page.</p></article>
+  </section>
+  <footer class="bottom">Pocket Stage fixture · local only · no data sent</footer>
+  <script>
+    const $=id=>document.getElementById(id);let resizeCount=0;let tapCount=0;function reportSize(){ $('width').textContent=window.innerWidth+' px';$('height').textContent=window.innerHeight+' px'; }function reportScroll(){ $('scroll-y').textContent=Math.round(window.scrollY)+' px'; }reportSize();window.addEventListener('resize',()=>{resizeCount++;reportSize();$('resize-count').textContent=resizeCount;});window.addEventListener('scroll',reportScroll,{passive:true});$('count-button').addEventListener('click',()=>{tapCount++;$('tap-count').textContent=tapCount;$('click-result').textContent='Click received · '+tapCount+' total';});$('scroll-button').addEventListener('click',()=>window.scrollBy({top:240,behavior:'smooth'}));
+  </script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "name": "pocket-stage-preview",
+  "private": true,
+  "scripts": {
+    "start": "node safe-area-launcher.cjs",
+    "start:browser": "node server.js --launch-browser",
+    "test:smoke": "node --test tests/preview-smoke.test.js",
+    "test:browser": "node tests/browser-qa.cjs",
+    "start:safe-area": "node safe-area-launcher.cjs",
+    "test:safe-area": "node tests/safe-area-browser-qa.cjs",
+    "browser:install": "node scripts/install-browser.cjs",
+    "test": "node --test tests/preview-smoke.test.js tests/managed-browser.test.cjs",
+    "test:safe-area:headed": "node tests/safe-area-browser-qa.cjs --headed"
+  },
+  "version": "0.1.0",
+  "description": "Local phone viewport previews with managed Chromium safe-area simulation",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "playwright": "^1.64.0"
+  }
+}
